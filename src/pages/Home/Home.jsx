@@ -22,9 +22,6 @@ const Home = () => {
     <div className={styles.container}>
       <div className={styles.stars}></div> {/* Stars layer */}
       {/* Wrap the FaBars icon with a Link component */}
-      <Link to="/intro" className={styles.link}>
-        <FaBars size={28} className={styles.barsIcon} />
-      </Link>
       <h1 className={styles.title}>
         <span className={`${styles.icon} ${styles.flippedIcon}`}>
           <TbMichelinStarGreen size={48} />

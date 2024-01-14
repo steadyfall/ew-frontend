@@ -73,11 +73,13 @@ const SideBar = () => {
           style={{ transition: `transform 0.3s` }}
         >
           <div className={`${styles.sidebarIcon}`}>
-            <SideBarItem
-              icon={<FaBars size="20" />}
-              text={isOpen ? "Close Sidebar" : "Open Sidebar"}
-              isOpen={isOpen}
-            />
+            <Link to="/">
+              <SideBarItem
+                icon={<FaBars size="20" />}
+                text={isOpen ? "Close Sidebar" : "Open Sidebar"}
+                isOpen={isOpen}
+              />
+            </Link>
           </div>
         </div>
 

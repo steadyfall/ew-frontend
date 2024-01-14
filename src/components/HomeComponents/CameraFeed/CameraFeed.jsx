@@ -1,9 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { uploadImage } from "./api";
 import styles from "./CameraFeed.module.css";
-import { db } from "../../../Firebase";
 import { get, ref, set } from "firebase/database";
-import { IoIosArrowDropdownCircle } from "react-icons/io";
 
 const CameraFeed = ({ onCameraStateChange = () => {} }) => {
   const [prediction, setPrediction] = useState(null);
@@ -18,36 +16,6 @@ const CameraFeed = ({ onCameraStateChange = () => {} }) => {
     "Place an item in front of the camera to watch the magic happen!"
   );
   const selectedBinRef = useRef(1); // Use useRef instead of useState
-
-  const incrementRecycledItem = async () => {
-    console.log("Incrementing recycled item for bin:", selectedBinRef.current);
-    const dataRef = ref(db, `Data/${selectedBinRef.current}/Items Recycled`);
-    const snapshot = await get(dataRef);
-    if (snapshot.exists()) {
-      const currentValue = snapshot.val();
-      set(dataRef, currentValue + 1);
-    }
-  };
-
-  const incrementCompostItem = async () => {
-    console.log("Incrementing composted item for bin:", selectedBinRef.current);
-    const dataRef = ref(db, `Data/${selectedBinRef.current}/Items Composted`);
-    const snapshot = await get(dataRef);
-    if (snapshot.exists()) {
-      const currentValue = snapshot.val();
-      set(dataRef, currentValue + 1);
-    }
-  };
-
-  const incrementTrashItem = async () => {
-    console.log("Incrementing trashed item for bin:", selectedBinRef.current);
-    const dataRef = ref(db, `Data/${selectedBinRef.current}/Items Trashed`);
-    const snapshot = await get(dataRef);
-    if (snapshot.exists()) {
-      const currentValue = snapshot.val();
-      set(dataRef, currentValue + 1);
-    }
-  };
 
   useEffect(() => {
     handleToggleCamera();
@@ -156,24 +124,6 @@ const CameraFeed = ({ onCameraStateChange = () => {} }) => {
 
   return (
     <div className={styles.cameraContainer}>
-      {/* Dropdown for bin selection */}
-      <div className={styles.dropdownContainer}>
-        <select
-          value={selectedBinRef.current}
-          onChange={(e) => {
-            selectedBinRef.current = Number(e.target.value);
-            console.log("Selected Bin:", e.target.value);
-          }}
-          className={styles.dropdown}
-        >
-          {[...Array(10).keys()].map((num) => (
-            <option key={num + 1} value={num + 1}>
-              Bin {num + 1}
-            </option>
-          ))}
-        </select>
-        <IoIosArrowDropdownCircle className={styles.dropdownIcon} />
-      </div>
       <div className={styles.cameraBorder}>
         <video ref={videoRef} autoPlay className={styles.cameraVideo}></video>
         <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
