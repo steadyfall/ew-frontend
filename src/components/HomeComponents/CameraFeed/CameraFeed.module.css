@@ -140,3 +140,27 @@
   transform: translateY(-50%); /* Center the icon with a translation */
   pointer-events: none; /* Make sure the icon doesn't interfere with the dropdown's click events */
 }
+
+.newButtonOnBottom {
+  position: relative;
+  /* bottom: 20px; */
+  center: relative;
+  top: 35px;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  background-color: #3498db;
+  border: none;
+  cursor: pointer;
+  padding: 15px 30px;
+  font-size: 18px;
+  color: white;
+  border-radius: 8px;
+  outline: none;
+  animation: pulse 2s infinite;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.newButtonOnBottom:hover {
+  background-color: #2980b9;
+}
+

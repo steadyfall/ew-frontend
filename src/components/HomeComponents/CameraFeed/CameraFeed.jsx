@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import { uploadImage } from "./api";
 import styles from "./CameraFeed.module.css";
 import Webcam from "react-webcam";
@@ -14,7 +14,7 @@ const CameraFeed = ({ onCameraStateChange = () => {} }) => {
   const [instructionText, setInstructionText] = useState(
     "Place an item in front of the camera to watch the magic happen!"
   );
-  const selectedBinRef = useRef(1); // Use useRef instead of useState
+  const selectedBinRef = useRef(null); // Use useRef instead of useState
 
   const dynamicWebcamSize = () => {
     return [
@@ -24,8 +24,8 @@ const CameraFeed = ({ onCameraStateChange = () => {} }) => {
   };
 
   const videoConstraints = {
-    "width":dynamicWebcamSize()[1],
-    "height":dynamicWebcamSize()[0]
+    "height":dynamicWebcamSize()[0],
+    "width":dynamicWebcamSize()[1]
   }
   
   const renderVideoCSS = () => {
@@ -47,13 +47,37 @@ const CameraFeed = ({ onCameraStateChange = () => {} }) => {
       videoConstraints={videoConstraints}
     />
   };
-  
+
+  const [imgSrc, setImgSrc] = useState(null);
+
+  // create a capture function
+  const capture = useCallback(() => {
+    const imageSrc = getScreenshot();
+    setImgSrc(imageSrc);
+  }, [webcamRef]);
+
+  const retake = () => {
+    setImgSrc(null);
+  };
+
   return (
     <div className={styles.cameraContainer}>
       <div className={styles.cameraBorder}>
-        <WebcamComponent />
+        {imgSrc ? (
+          <img src={imgSrc} alt="webcam" />
+        ) : (
+          <WebcamComponent />
+        )}
       </div>
-      <p className={styles.predictionText}>{instructionText}</p>
+      {imgSrc ? (
+          <button onClick={retake} className={styles.newButtonOnBottom} style={{ color: green }}>
+            Retake?
+          </button>
+        ) : (
+          <button onClick={capture} className={styles.newButtonOnBottom}>
+            Click this for the magic to happen!
+          </button>
+        )}
     </div>
   );
 };
